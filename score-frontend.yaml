@@ -1,0 +1,30 @@
+# Score.dev specification for test2 Frontend
+apiVersion: score.dev/v1b1
+kind: Workload
+
+metadata:
+  name: test2-frontend
+
+spec:
+  containers:
+    frontend:
+      image: test2/frontend:latest
+      variables:
+        NODE_ENV: "production"
+      ports:
+        - port: 3000
+          protocol: TCP
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "100m"
+        limits:
+          memory: "256Mi"
+          cpu: "200m"
+
+  service:
+    ports:
+      web:
+        port: 3000
+        targetPort: 3000
+        protocol: TCP
