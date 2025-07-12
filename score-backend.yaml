@@ -1,0 +1,46 @@
+# Score.dev specification for test2 Backend
+apiVersion: score.dev/v1b1
+kind: Workload
+
+metadata:
+  name: test2-backend
+
+spec:
+  containers:
+    backend:
+      image: test2/backend:latest
+      variables:
+        PORT: "8080"
+        NODE_ENV: "production"
+        LOG_LEVEL: "info"
+        REDIS_HOST: ${resources.redis.host}
+        REDIS_PORT: ${resources.redis.port}
+        REDIS_PASSWORD: ${resources.redis.password}
+      ports:
+        - port: 8080
+          protocol: TCP
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "250m"
+        limits:
+          memory: "512Mi"
+          cpu: "500m"
+
+  service:
+    ports:
+      api:
+        port: 8080
+        targetPort: 8080
+        protocol: TCP
+
+  resources:
+    redis:
+      type: redis
+      properties:
+        host:
+          type: string
+        port:
+          type: integer
+        password:
+          type: string
